@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://guy-Fawke.github.io</id>
+    <title>Guy-fawke&apos;s  warehouse</title>
+    <updated>2020-02-17T05:38:39.553Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://guy-Fawke.github.io"/>
+    <link rel="self" href="https://guy-Fawke.github.io/atom.xml"/>
+    <subtitle>A small warehouse for recording the learning process</subtitle>
+    <logo>https://guy-Fawke.github.io/images/avatar.png</logo>
+    <icon>https://guy-Fawke.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2020, Guy-fawke&apos;s  warehouse</rights>
+    <entry>
+        <title type="html"><![CDATA[一场查看网页源代码的博弈]]></title>
+        <id>https://guy-Fawke.github.io/post/查看源码博弈/</id>
+        <link href="https://guy-Fawke.github.io/post/查看源码博弈/">
+        </link>
+        <updated>2020-02-16T15:22:46.000Z</updated>
+        <content type="html"><![CDATA[<p>   为什么会有一个这么奇怪的标题呢，这事要从我开始学习Web安全说起。在初学CTF之时询问了大佬们学哪个方面有前途，大佬们的回答千奇百怪，在考虑了我还是更喜欢对着界面看到成效的这种感觉，最终还是决定向Web方向发展一下，所以这就开始了我的渗透测试学习。学习是基于这个网站的---&gt;<a href="https://adworld.xctf.org.cn">攻防世界</a>，这里也推荐给大家，可以和自己的小伙伴组建战队，一起学习进步🤜🤛。</p>
+<p>  今天要说的这场博弈呢，就是这个练习靶场的Web基础题第一题:<br>
+<img src="https://guy-Fawke.github.io/post-images/2020021601.jpg" alt="" loading="lazy"></p>
+<p>  这是一道非常基础的题，想要学习Web，首先就要学会的是查看网页的源代码，几种查看网页源代码的方式都十分简单，这里就不过多解释了，简单列出来：</p>
+<ol>
+<li>
+<p><strong>通过点击鼠标右键查看网页源代码。</strong></p>
+</li>
+<li>
+<p><strong>通过点击鼠标右键查看元素，精准定位到元素位置，同时查看到网页代码。</strong></p>
+</li>
+<li>
+<p><strong>在地址栏中输入 <code>view-source:+URL</code>查看网页源代码，Eg   view-source:http://baidu.com  即可查看百度的页面源码。</strong></p>
+</li>
+<li>
+<p><strong>点击键盘上的F12，直接查看网页源代码。</strong></p>
+</li>
+</ol>
+<p>  这几种查看网页源代码的方式所得到的的结果是有所区别的，用方法4得到的是未经过浏览器解析的网页源代码，其他三种方式是浏览器解析后的网页源代码，这里就不过多解释了，想要具体了解的朋友可以继续再查看相关资料~~（其实百度百度就能明白）~~。</p>
+<p>  当然，如果故事到这里就结束了未免也太水了一点，拿到Flag之后的我非常好奇，这是怎么做到的呢？为什么禁止了我的鼠标右键呢，不久之后遇到一个页面，也禁止了我使用F12查看源码，这里就让我十分的不开心了，所以就专门去学习了一下如何禁用鼠标右键和F12查看源码，这里记录下来，和大家一起学习。（涉及到一定的前端知识，我也没有系统学过，可能不能写的很清楚）。</p>
+<h4 id="一-禁止使用鼠标"><strong>（一）、禁止使用鼠标：</strong></h4>
+<pre><code class="language-javascript">&lt;script&gt;
+	function stop(){
+     	 return false;
+   	   }      
+	document.documentElement.oncontextmenu=stop;
+	document.documentElement.ondragstart=stop;
+	document.documentElement.onselectstart=stop;
+&lt;/script&gt;
+</code></pre>
+<p>简单进行解释如下：</p>
+<p>首先介绍一个概念  <strong>Document对象</strong></p>
+<blockquote>
+<p>当浏览器载入 HTML 文档, 它就会成为 <strong>Document 对象</strong>。</p>
+<p>Document 对象是 HTML 文档的根节点。</p>
+<p>Document 对象使我们可以从脚本中对 HTML 页面中的所有元素进行访问。</p>
+<p>提示：Document 对象是 Window 对象的一部分，可通过 window.document 属性对其进行访问。</p>
+</blockquote>
+<p>简答来说，当你浏览网页的时候，你所操纵的浏览器对于这个网页来说就是一个Document对象。</p>
+<p>​     其次解释之后的三个事件</p>
+<ul>
+<li>oncontextmenu ：当点击右击鼠标时执行 JavaScript</li>
+<li>ondragstart         ：当开始拖动元素时执行JavaScript</li>
+<li>onselectstart       ：触发时间为目标对象被开始选中时（即选中动作刚开始，尚未实质性被选中）</li>
+</ul>
+<p>  显然，当发生这三个事件的时候会调用stop()，进而返回一个False，这里包括鼠标右键点击和左键选中，所以会使得我们无法使用鼠标（包括左右键），于此类似的还有下面这段代码：</p>
+<pre><code class="language-javascript">&lt;script language=&quot;JavaScript&quot;&gt;
+	document.oncontextmenu=new Function(&quot;event.returnValue=false;&quot;);
+	document.onselectstart=new Function(&quot;event.returnValue=false;&quot;);
+&lt;/script&gt;
+</code></pre>
+<h4 id="二-禁止使用f12查看源代码"><strong>（二）、禁止使用F12查看源代码</strong></h4>
+<p>  这里使用的方式和之前大致一样，就是对按键的禁用，只需要在按下F12时将它的按键码转换为 0 即可，展示代码:</p>
+<pre><code class="language-javascript">&lt;script type=&quot;text/javascript&quot;&gt; 
+       document.onkeydown = function () { 
+            if (window.event &amp;&amp; window.event.keyCode == 123) { 
+                event.keyCode = 0; 
+                event.returnValue = false; 
+                return false; 
+            } 
+        }; 
+&lt;/script&gt; 
+</code></pre>
+<p>从这个事件的名字我们显而易见<strong>onkeydown：</strong></p>
+<blockquote>
+<p>onkeydown 事件会在用户按下一个键盘按键时发生。</p>
+</blockquote>
+<p>至于判断条件内的<strong>keyCode:</strong></p>
+<blockquote>
+<p>keyCode 属性返回<a href="https://www.runoob.com/jsref/event-onkeypress.html">onkeypress</a>事件触发的键的值的字符代码，或者 <a href="https://www.runoob.com/jsref/event-onkeydown.html">onkeydown</a> 或  <a href="https://www.runoob.com/jsref/event-onkeyup.html">onkeyup</a> 事件的键的代码。</p>
+</blockquote>
+<p>  值得一提的是，字符代码和键代码是有所区别的，两种类型的值不是都相等的，比如说小写字符 &quot;w&quot; 和大写字符 &quot;W&quot; 有相同的键盘代码，因为他们键盘上的同一个位置 ( &quot;W&quot; 代码为 &quot;87&quot;)，但是它们有不同的字符代码，两个字符输出是不一样的( &quot;w&quot; 和 &quot;W&quot; 字符代码为 &quot;119&quot; 和 &quot;87&quot;)，这里有个建议，如果需要知道用户按下的是有明显输入内容，不太需要区分大小的打印键 (如   &quot;a&quot; 或 &quot;5&quot;)，建议使用 onkeypress 事件。如果需要知道用户按下的是功能键(如 &quot;F12&quot;,  &quot;Home&quot;) 可使用 onkeydown 或 onkeyup 事件，这样可以在按下的瞬间或者松开的瞬间执行。</p>
+<p>下面贴上键码对照表（可能有一丢丢不清楚，可以百度直接搜索）：</p>
+<figure data-type="image" tabindex="1"><img src="https://guy-Fawke.github.io/post-images/1581866651549.jpg" alt="键码对照表" title="键码对照表" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ 使用Gridea基于GitHub搭建自己的博客]]></title>
+        <id>https://guy-Fawke.github.io/post/Make_Gridea/</id>
+        <link href="https://guy-Fawke.github.io/post/Make_Gridea/">
+        </link>
+        <updated>2020-02-15T08:56:29.000Z</updated>
+        <content type="html"><![CDATA[<p>  思考良久，决定第一篇还是记录一下自己创建博客的过程。很久之前就想有个自己的博客了，用来记录自己的学习过程，写在其他平台那些花里胡哨的广告自己又十分的不喜欢，这两天终于努努力把它实现了。其中搜索了一些资料但是也踩了很多坑，所以这里记录下来，也为以后需要的人提供经验。当然了，初次写文章，可能还会比较混乱，我也会多加努力，一步步做到更好。</p>
+<p>  我选的这个方式呢应该说是最简单的一种了，基本上点点鼠标就能实现，不足之处就是没有太多自己创造的方面，当然如果你有一定的前端能力，也是可以一点点扩展的。但如果你跟我一样只是需要一个能写文章的地方，而且没有太强的前端技能，那这种方式会很适合你。</p>
+<h2 id="一-建立自己的github账号和仓库">一、建立自己的Github账号和仓库</h2>
+<p>  因为实第一篇文章，当然要从最简单的开始讲起，所以我们先开始建立一个Github账号并建立一个仓库。这种时候你只需要点击这里---&gt;<a href="http://www.github.com">Github直通车</a><br>
+<img src="https://guy-Fawke.github.io/post-images/1581751324109.png" alt="GitHub的注册页面" loading="lazy"></p>
+<p>  之后会有一个简单的人机认证，和选择付费还是免费的内容，这里大多数情况下使用免费的Github就能够满足大家的使用要求了。最后只需要根据自己的情况很轻松你就能拥有一个自己的Github账号了。<br>
+  有了账号之后当然是要创建一个Repositories，也就是一个仓库来存储自己博客，点击这里的New。<br>
+<img src="https://guy-Fawke.github.io/post-images/1581753479428.png" alt="建立仓库" title="建立自己的博客仓库" loading="lazy"><br>
+  接着写下自己的仓库名，我的已经建立了所以会报错，这里按照建议填的话会比较方便，这样Github会自动建立一个GitHub Pages会更为方便 <s>(我承认我比较懒)</s> ，当然也算是我不小心踩到的一个坑，如果只是一个空仓库的话他不会建立分支和其他内容，就需要自己去设置里将这个仓库变为一个GitHub pages，在这就不过多解释了， 接下来就可以轻松的开始我们的第二步了。<br>
+<img src="https://guy-Fawke.github.io/post-images/1581753985124.jpg" alt="" loading="lazy"></p>
+<h2 id="二-生成token和生成页面">二、生成Token和生成页面</h2>
+<p>  这里我也是看着别人学习的，大佬写的非常的详细所以把大佬的教学博客贴过来供大家学习和参考，同时当做自己的学费----&gt;&gt; <a href="https://sspai.com/post/54212">看搭建过程点这里！！！</a>  这篇文章的最后有其他的一些搭建方式，所以如果想学习了解，或者完全自主的搭建自己的博客的话，可以看他最下面推荐的几种方式。<br>
+  我主要想写一个非常大的坑，如果不看上面的教程可能会有点莫名其妙。<br>
+<img src="https://guy-Fawke.github.io/post-images/1581755897208.png" alt="检测远程连接" loading="lazy"><br>
+在这里检测远程连接的时候，很多人即使填对了所有的信息之后也容易一直连接失败，我因为这个问题搞了很久很久，甚至陷入了对自己深深的怀疑……如果你确定所有信息尤其是Token没有填错的话，就可以继续往下看了。</p>
+<p><strong>------------------听说在新发布的最新版已经更正了错误，不知道还有没有用-----------------</strong></p>
+<p><strong>1. 去自己的Github仓库复制你的git连接。</strong></p>
+<figure data-type="image" tabindex="1"><img src="https://guy-Fawke.github.io/post-images/1581756315306.png" alt="" loading="lazy"></figure>
+<p><strong>2. 找到Gridea的文件夹（一般在文档下面），找到output文件夹打开</strong></p>
+<figure data-type="image" tabindex="2"><img src="https://guy-Fawke.github.io/post-images/1581756388949.jpg" alt="" loading="lazy"></figure>
+<p><strong>3. 空白处右键打开Git Bash</strong></p>
+<figure data-type="image" tabindex="3"><img src="https://guy-Fawke.github.io/post-images/1581756488752.png" alt="" loading="lazy"></figure>
+<p><strong>4. 输入以下命令回车</strong></p>
+<p><code>git remote add origin &quot;仓库的git命令地址&quot;</code><br>
+(只是一个命令就不贴图啦)之后再返回点击远程测试，如果不出意外的话就能成功连接了。</p>
+<h2 id="总结">总结</h2>
+<p>  我也是这两天刚刚开始使用Gridea并且搭建起了自己的博客，总体来说过程磕磕绊绊但是结果还是很好的。这个软件还比较小众，内在的设计大家可以自己再去没事点一点研究一下，如果有好的使用技巧也欢迎能够分享。我个人认为，有一点不足就是我不知道为什么目前没办法用其他的Markdown编译器来写自己的博客，后续如果成功了还会再来更新自己的使用方法，这里当然要推荐我比较喜欢的一款编辑器啦！！<a href="https://www.typora.io/">Typora</a>  边写边预览，小巧又轻便，哈哈，和我用来搭建博客的软件一样哦。</p>
+]]></content>
+    </entry>
+</feed>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta HTTP-EQUIV="pragma" CONTENT="no-cache"> 
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate"> 
+<meta HTTP-EQUIV="expires" CONTENT="0"> 
+<title>一场查看网页源代码的博弈 | Guy-fawke&#39;s  warehouse</title>	
+
+<link rel="stylesheet" href="https://guy-Fawke.github.io/styles/main.css">
+<script type="text/javascript">
+function getCSS()
+{
+        datetoday = new Date();
+        timenow=datetoday.getTime();
+        datetoday.setTime(timenow);
+        thehour = datetoday.getHours();
+
+            display = "https://guy-Fawke.github.io/media/css/night.css";
+
+            display = "https://guy-Fawke.github.io/media/css/night.css";   
+      
+            display = "https://guy-Fawke.github.io/media/css/day.css";
+
+            display = "https://guy-Fawke.github.io/media/css/day.css";
+      
+
+var css = '<';
+        css+='link rel="stylesheet" href='+display+' \/';
+        css+='>';
+        document.write(css);
+}
+</script>
+<link href="https://fonts.googleapis.com/css?family=Dancing+Script|Noto+Sans+SC:300|Montserrat&display=swap" rel="stylesheet">
+<link href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css" rel="stylesheet" />
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<script type='text/javascript' src='https://guy-Fawke.github.io/media/scripts/script.js'></script>
+<link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet" />
+  <script src="https://cdn.bootcss.com/wow/1.1.2/wow.min.js"></script>
+  <script src="https://cdn.bootcss.com/highlight.js/9.15.8/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script>wow=new WOW({boxClass:'wow',animateClass:'animated',offset:0,mobile:true,live:true});wow.init();</script>
+
+<script type="text/javascript">
+window.onload=getCSS();
+</script>
+
+
+</head>
+
+<body class="post-template-default single single-post postid-70 single-format-standard">
+	<div id="wrapper">
+				<header id="header" class="site-header" >
+			<div class="site-branding">
+				<h1 class="site-title"><a href="https://guy-Fawke.github.io" rel="home">Guy-fawke&#39;s  warehouse</a></h1>
+
+				<h2 class="site-description">A small warehouse for recording the learning process</h2>
+
+			</div>
+			<nav id="nav-wrapper">
+				<div class="container">
+					<div class="nav-toggle">
+						<div class="bars">
+							<div class="bar"></div>
+							<div class="bar"></div>
+							<div class="bar"></div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<ul id="" class="dove">
+						
+
+						<li>
+
+							<a href="/"> 首页</a></li>
+
+						
+
+						<li>
+
+							<a href="/archives"> 归档</a></li>
+
+						
+
+						<li>
+
+							<a href="/tags"> 标签</a></li>
+
+						
+
+						<li>
+
+							<a href="/post/about"> 关于</a></li>
+
+						
+
+					</ul>
+					</li>
+
+					</ul>
+				</div>
+			</nav>
+			<div class="jingge">
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+		</header>
+		<div id="content" class="container">
+			<div class="row">
+				<div class="col-md-8 site-main">
+					<article id="post-70"
+						class="post-70 post type-post status-publish format-standard hentry category-5 tag-10 tag-9 tag-11">
+						<div class="entry-content">
+							<h1 class="wow swing entry-title">一场查看网页源代码的博弈</h1>
+							<div class="entry-meta">
+								<div class="wow bounce">
+									<i class="iconfont icon-rili"> <time class="lately-a" datetime="2020-02-16 23:22:46"
+											itemprop="datePublished" pubdate="">2020-02-16</time></i>
+								</div>
+								</span>
+							</div>
+							<div class="wow slideInLeft entry-summary song">
+								<p>   为什么会有一个这么奇怪的标题呢，这事要从我开始学习Web安全说起。在初学CTF之时询问了大佬们学哪个方面有前途，大佬们的回答千奇百怪，在考虑了我还是更喜欢对着界面看到成效的这种感觉，最终还是决定向Web方向发展一下，所以这就开始了我的渗透测试学习。学习是基于这个网站的---&gt;<a href="https://adworld.xctf.org.cn">攻防世界</a>，这里也推荐给大家，可以和自己的小伙伴组建战队，一起学习进步🤜🤛。</p>
+<p>  今天要说的这场博弈呢，就是这个练习靶场的Web基础题第一题:<br>
+<img src="https://guy-Fawke.github.io/post-images/2020021601.jpg" alt="" loading="lazy"></p>
+<p>  这是一道非常基础的题，想要学习Web，首先就要学会的是查看网页的源代码，几种查看网页源代码的方式都十分简单，这里就不过多解释了，简单列出来：</p>
+<ol>
+<li>
+<p><strong>通过点击鼠标右键查看网页源代码。</strong></p>
+</li>
+<li>
+<p><strong>通过点击鼠标右键查看元素，精准定位到元素位置，同时查看到网页代码。</strong></p>
+</li>
+<li>
+<p><strong>在地址栏中输入 <code>view-source:+URL</code>查看网页源代码，Eg   view-source:http://baidu.com  即可查看百度的页面源码。</strong></p>
+</li>
+<li>
+<p><strong>点击键盘上的F12，直接查看网页源代码。</strong></p>
+</li>
+</ol>
+<p>  这几种查看网页源代码的方式所得到的的结果是有所区别的，用方法4得到的是未经过浏览器解析的网页源代码，其他三种方式是浏览器解析后的网页源代码，这里就不过多解释了，想要具体了解的朋友可以继续再查看相关资料~~（其实百度百度就能明白）~~。</p>
+<p>  当然，如果故事到这里就结束了未免也太水了一点，拿到Flag之后的我非常好奇，这是怎么做到的呢？为什么禁止了我的鼠标右键呢，不久之后遇到一个页面，也禁止了我使用F12查看源码，这里就让我十分的不开心了，所以就专门去学习了一下如何禁用鼠标右键和F12查看源码，这里记录下来，和大家一起学习。（涉及到一定的前端知识，我也没有系统学过，可能不能写的很清楚）。</p>
+<h4 id="一-禁止使用鼠标"><strong>（一）、禁止使用鼠标：</strong></h4>
+<pre><code class="language-javascript">&lt;script&gt;
+	function stop(){
+     	 return false;
+   	   }      
+	document.documentElement.oncontextmenu=stop;
+	document.documentElement.ondragstart=stop;
+	document.documentElement.onselectstart=stop;
+&lt;/script&gt;
+</code></pre>
+<p>简单进行解释如下：</p>
+<p>首先介绍一个概念  <strong>Document对象</strong></p>
+<blockquote>
+<p>当浏览器载入 HTML 文档, 它就会成为 <strong>Document 对象</strong>。</p>
+<p>Document 对象是 HTML 文档的根节点。</p>
+<p>Document 对象使我们可以从脚本中对 HTML 页面中的所有元素进行访问。</p>
+<p>提示：Document 对象是 Window 对象的一部分，可通过 window.document 属性对其进行访问。</p>
+</blockquote>
+<p>简答来说，当你浏览网页的时候，你所操纵的浏览器对于这个网页来说就是一个Document对象。</p>
+<p>​     其次解释之后的三个事件</p>
+<ul>
+<li>oncontextmenu ：当点击右击鼠标时执行 JavaScript</li>
+<li>ondragstart         ：当开始拖动元素时执行JavaScript</li>
+<li>onselectstart       ：触发时间为目标对象被开始选中时（即选中动作刚开始，尚未实质性被选中）</li>
+</ul>
+<p>  显然，当发生这三个事件的时候会调用stop()，进而返回一个False，这里包括鼠标右键点击和左键选中，所以会使得我们无法使用鼠标（包括左右键），于此类似的还有下面这段代码：</p>
+<pre><code class="language-javascript">&lt;script language=&quot;JavaScript&quot;&gt;
+	document.oncontextmenu=new Function(&quot;event.returnValue=false;&quot;);
+	document.onselectstart=new Function(&quot;event.returnValue=false;&quot;);
+&lt;/script&gt;
+</code></pre>
+<h4 id="二-禁止使用f12查看源代码"><strong>（二）、禁止使用F12查看源代码</strong></h4>
+<p>  这里使用的方式和之前大致一样，就是对按键的禁用，只需要在按下F12时将它的按键码转换为 0 即可，展示代码:</p>
+<pre><code class="language-javascript">&lt;script type=&quot;text/javascript&quot;&gt; 
+       document.onkeydown = function () { 
+            if (window.event &amp;&amp; window.event.keyCode == 123) { 
+                event.keyCode = 0; 
+                event.returnValue = false; 
+                return false; 
+            } 
+        }; 
+&lt;/script&gt; 
+</code></pre>
+<p>从这个事件的名字我们显而易见<strong>onkeydown：</strong></p>
+<blockquote>
+<p>onkeydown 事件会在用户按下一个键盘按键时发生。</p>
+</blockquote>
+<p>至于判断条件内的<strong>keyCode:</strong></p>
+<blockquote>
+<p>keyCode 属性返回<a href="https://www.runoob.com/jsref/event-onkeypress.html">onkeypress</a>事件触发的键的值的字符代码，或者 <a href="https://www.runoob.com/jsref/event-onkeydown.html">onkeydown</a> 或  <a href="https://www.runoob.com/jsref/event-onkeyup.html">onkeyup</a> 事件的键的代码。</p>
+</blockquote>
+<p>  值得一提的是，字符代码和键代码是有所区别的，两种类型的值不是都相等的，比如说小写字符 &quot;w&quot; 和大写字符 &quot;W&quot; 有相同的键盘代码，因为他们键盘上的同一个位置 ( &quot;W&quot; 代码为 &quot;87&quot;)，但是它们有不同的字符代码，两个字符输出是不一样的( &quot;w&quot; 和 &quot;W&quot; 字符代码为 &quot;119&quot; 和 &quot;87&quot;)，这里有个建议，如果需要知道用户按下的是有明显输入内容，不太需要区分大小的打印键 (如   &quot;a&quot; 或 &quot;5&quot;)，建议使用 onkeypress 事件。如果需要知道用户按下的是功能键(如 &quot;F12&quot;,  &quot;Home&quot;) 可使用 onkeydown 或 onkeyup 事件，这样可以在按下的瞬间或者松开的瞬间执行。</p>
+<p>下面贴上键码对照表（可能有一丢丢不清楚，可以百度直接搜索）：</p>
+<figure data-type="image" tabindex="1"><img src="https://guy-Fawke.github.io/post-images/1581866651549.jpg" alt="键码对照表" title="键码对照表" loading="lazy"></figure>
+
+							</div>
+							<div class="wow bounceInDown vt-post-tags">
+								
+								<a href="https://guy-Fawke.github.io/tag/2k51vU1za/" rel="tag">CTF</a>
+								
+								<a href="https://guy-Fawke.github.io/tag/i5bMzEjFBd/" rel="tag">Web</a>
+								
+							</div>
+							<nav class="navigation3 post-navigation3" role="navigation">
+
+								<div class="nav-links3">
+									
+									
+									<div class="wow bounceInRight nav-next3"><a href="https://guy-Fawke.github.io/post/Make_Gridea/"
+											rel="next">  使用Gridea基于GitHub搭建自己的博客</a></div>
+									
+								</div>
+							</nav>
+							<div class="wow rollIn author-info" style="visibility: visible; animation-name: rollIn;">
+								<div class="author-avatar pull-left"><img
+										src="https://guy-Fawke.github.io/images/avatar.png"></div>
+								
+									
+						</div>
+					</article>
+					<div id="marlin_lite_about_widget-2" class="wow bounceInUp widget marlin_lite_about_widget"
+						data-wow-delay="0.1s">
+
+						
+						<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://guy-Fawke.github.io/media/scripts/Valine.min.js'></script>
+
+<div class="comment"></div>
+<script>
+        new Valine({
+            // AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+            av: AV, 
+            el: '.comment',
+            lang: 'zh-cn',
+            
+            
+      emoticon_list: ["吐.png","喷血.png","狂汗.png","不说话.png","汗.png","坐等.png","献花.png","不高兴.png","中刀.png","害羞.png","皱眉.png","小眼睛.png","中指.png","尴尬.png","瞅你.png","想一想.png","中枪.png","得意.png","肿包.png","扇耳光.png","亲亲.png","惊喜.png","脸红.png","无所谓.png","便便.png","愤怒.png","蜡烛.png","献黄瓜.png","内伤.png","投降.png","观察.png","看不见.png","击掌.png","抠鼻.png","邪恶.png","看热闹.png","口水.png","抽烟.png","锁眉.png","装大款.png","吐舌.png","无奈.png","长草.png","赞一个.png","呲牙.png","无语.png","阴暗.png","不出所料.png","咽气.png","期待.png","高兴.png","吐血倒地.png","哭泣.png","欢呼.png","黑线.png","喜极而泣.png","喷水.png","深思.png","鼓掌.png","暗地观察.png"],
+     	
+      	
+          
+        });
+    </script> 
+
+
+					</div>
+				</div>
+				
+
+
+<div class="tocc col l3 hide-on-med-and-down">
+	
+        <div class="toc-widget">
+			
+            <div class="toc-title"></div>
+			
+            <div id="toc-content">
+			
+			
+			</div>
+        </div>
+    </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.5.0/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '.entry-summary',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('.entry-summary').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+			</div>
+		</div>
+		<footer id="colophon" class="site-footer">
+	<div class="container">
+		<div class="copyright">
+			Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+			<br>
+			<b>Theme: </b>
+			<a href="https://github.com/alterfang/gridea-theme-pan" target="_blank" title="Pan">
+				<span><b>Pan</b></span>
+			</a>
+			<b>. Powered by </b>
+			<a href="https://gridea.dev/" target="_blank" title="Gridea">
+				<span><b>Gridea</b></span>
+			</a>
+		</div>
+	</div><!-- .container -->
+</footer><!-- #colophon -->
+	</div>
+
+	<script src="https://cdn.bootcss.com/fitvids/1.2.0/jquery.fitvids.min.js"></script>
+<script type='text/javascript' src='https://guy-Fawke.github.io/media/scripts/marlin-scripts.js'></script>
+ <script src="//tokinx.github.io/lately/lately.min.js"></script>
+  <script>jQuery(document).ready(function(){$.lately({'target':'.lately-a,.lately-b,.lately-c'})});</script>
+  <style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span><i class="iconfont icon-xiangshang"></i></span>
+</a>
+
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+	<script data-no-instant>
+		(function ($) {
+			$.extend({
+				adamsOverload: function () {
+					$('.navigation:eq(0)').remove();
+					$("").attr("rel", "external");
+					$("a[rel='external'],a[rel='external nofollow']").attr("target", "_blank");
+					$("a.vi").attr("rel", "");
+					$.viewImage({
+						'target': 'img',
+						'exclude': '.vsmile-icons img,.gallery img',
+						'delay': 300
+					});
+					$.lately({
+						'target': '.commentmetadata a,.infos time,.post-list time'
+					});
+					prettyPrint();
+
+					$('ul.links li a').each(function () {
+						if ($(this).parent().find('.bg').length == 0) {
+							$(this).parent().append(
+								'<!---<div class="bg" style="background-image:url(https://c3.glgoo.top/s2/favicons?domain=' +
+								$(this).attr("href") + ')"></div>--->')
+						}
+					});
+				}
+			});
+		})(jQuery);
+		jQuery.adamsOverload();
+	</script>
+
+</body>
+
+</html>

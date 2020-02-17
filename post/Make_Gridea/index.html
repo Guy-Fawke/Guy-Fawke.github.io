@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta HTTP-EQUIV="pragma" CONTENT="no-cache"> 
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate"> 
+<meta HTTP-EQUIV="expires" CONTENT="0"> 
+<title> 使用Gridea基于GitHub搭建自己的博客 | Guy-fawke&#39;s  warehouse</title>	
+
+<link rel="stylesheet" href="https://guy-Fawke.github.io/styles/main.css">
+<script type="text/javascript">
+function getCSS()
+{
+        datetoday = new Date();
+        timenow=datetoday.getTime();
+        datetoday.setTime(timenow);
+        thehour = datetoday.getHours();
+
+            display = "https://guy-Fawke.github.io/media/css/night.css";
+
+            display = "https://guy-Fawke.github.io/media/css/night.css";   
+      
+            display = "https://guy-Fawke.github.io/media/css/day.css";
+
+            display = "https://guy-Fawke.github.io/media/css/day.css";
+      
+
+var css = '<';
+        css+='link rel="stylesheet" href='+display+' \/';
+        css+='>';
+        document.write(css);
+}
+</script>
+<link href="https://fonts.googleapis.com/css?family=Dancing+Script|Noto+Sans+SC:300|Montserrat&display=swap" rel="stylesheet">
+<link href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css" rel="stylesheet" />
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<script type='text/javascript' src='https://guy-Fawke.github.io/media/scripts/script.js'></script>
+<link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet" />
+  <script src="https://cdn.bootcss.com/wow/1.1.2/wow.min.js"></script>
+  <script src="https://cdn.bootcss.com/highlight.js/9.15.8/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script>wow=new WOW({boxClass:'wow',animateClass:'animated',offset:0,mobile:true,live:true});wow.init();</script>
+
+<script type="text/javascript">
+window.onload=getCSS();
+</script>
+
+
+</head>
+
+<body class="post-template-default single single-post postid-70 single-format-standard">
+	<div id="wrapper">
+				<header id="header" class="site-header" >
+			<div class="site-branding">
+				<h1 class="site-title"><a href="https://guy-Fawke.github.io" rel="home">Guy-fawke&#39;s  warehouse</a></h1>
+
+				<h2 class="site-description">A small warehouse for recording the learning process</h2>
+
+			</div>
+			<nav id="nav-wrapper">
+				<div class="container">
+					<div class="nav-toggle">
+						<div class="bars">
+							<div class="bar"></div>
+							<div class="bar"></div>
+							<div class="bar"></div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<ul id="" class="dove">
+						
+
+						<li>
+
+							<a href="/"> 首页</a></li>
+
+						
+
+						<li>
+
+							<a href="/archives"> 归档</a></li>
+
+						
+
+						<li>
+
+							<a href="/tags"> 标签</a></li>
+
+						
+
+						<li>
+
+							<a href="/post/about"> 关于</a></li>
+
+						
+
+					</ul>
+					</li>
+
+					</ul>
+				</div>
+			</nav>
+			<div class="jingge">
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+		</header>
+		<div id="content" class="container">
+			<div class="row">
+				<div class="col-md-8 site-main">
+					<article id="post-70"
+						class="post-70 post type-post status-publish format-standard hentry category-5 tag-10 tag-9 tag-11">
+						<div class="entry-content">
+							<h1 class="wow swing entry-title"> 使用Gridea基于GitHub搭建自己的博客</h1>
+							<div class="entry-meta">
+								<div class="wow bounce">
+									<i class="iconfont icon-rili"> <time class="lately-a" datetime="2020-02-15 16:56:29"
+											itemprop="datePublished" pubdate="">2020-02-15</time></i>
+								</div>
+								</span>
+							</div>
+							<div class="wow slideInLeft entry-summary song">
+								<p>  思考良久，决定第一篇还是记录一下自己创建博客的过程。很久之前就想有个自己的博客了，用来记录自己的学习过程，写在其他平台那些花里胡哨的广告自己又十分的不喜欢，这两天终于努努力把它实现了。其中搜索了一些资料但是也踩了很多坑，所以这里记录下来，也为以后需要的人提供经验。当然了，初次写文章，可能还会比较混乱，我也会多加努力，一步步做到更好。</p>
+<p>  我选的这个方式呢应该说是最简单的一种了，基本上点点鼠标就能实现，不足之处就是没有太多自己创造的方面，当然如果你有一定的前端能力，也是可以一点点扩展的。但如果你跟我一样只是需要一个能写文章的地方，而且没有太强的前端技能，那这种方式会很适合你。</p>
+<h2 id="一-建立自己的github账号和仓库">一、建立自己的Github账号和仓库</h2>
+<p>  因为实第一篇文章，当然要从最简单的开始讲起，所以我们先开始建立一个Github账号并建立一个仓库。这种时候你只需要点击这里---&gt;<a href="http://www.github.com">Github直通车</a><br>
+<img src="https://guy-Fawke.github.io/post-images/1581751324109.png" alt="GitHub的注册页面" loading="lazy"></p>
+<p>  之后会有一个简单的人机认证，和选择付费还是免费的内容，这里大多数情况下使用免费的Github就能够满足大家的使用要求了。最后只需要根据自己的情况很轻松你就能拥有一个自己的Github账号了。<br>
+  有了账号之后当然是要创建一个Repositories，也就是一个仓库来存储自己博客，点击这里的New。<br>
+<img src="https://guy-Fawke.github.io/post-images/1581753479428.png" alt="建立仓库" title="建立自己的博客仓库" loading="lazy"><br>
+  接着写下自己的仓库名，我的已经建立了所以会报错，这里按照建议填的话会比较方便，这样Github会自动建立一个GitHub Pages会更为方便 <s>(我承认我比较懒)</s> ，当然也算是我不小心踩到的一个坑，如果只是一个空仓库的话他不会建立分支和其他内容，就需要自己去设置里将这个仓库变为一个GitHub pages，在这就不过多解释了， 接下来就可以轻松的开始我们的第二步了。<br>
+<img src="https://guy-Fawke.github.io/post-images/1581753985124.jpg" alt="" loading="lazy"></p>
+<h2 id="二-生成token和生成页面">二、生成Token和生成页面</h2>
+<p>  这里我也是看着别人学习的，大佬写的非常的详细所以把大佬的教学博客贴过来供大家学习和参考，同时当做自己的学费----&gt;&gt; <a href="https://sspai.com/post/54212">看搭建过程点这里！！！</a>  这篇文章的最后有其他的一些搭建方式，所以如果想学习了解，或者完全自主的搭建自己的博客的话，可以看他最下面推荐的几种方式。<br>
+  我主要想写一个非常大的坑，如果不看上面的教程可能会有点莫名其妙。<br>
+<img src="https://guy-Fawke.github.io/post-images/1581755897208.png" alt="检测远程连接" loading="lazy"><br>
+在这里检测远程连接的时候，很多人即使填对了所有的信息之后也容易一直连接失败，我因为这个问题搞了很久很久，甚至陷入了对自己深深的怀疑……如果你确定所有信息尤其是Token没有填错的话，就可以继续往下看了。</p>
+<p><strong>------------------听说在新发布的最新版已经更正了错误，不知道还有没有用-----------------</strong></p>
+<p><strong>1. 去自己的Github仓库复制你的git连接。</strong></p>
+<figure data-type="image" tabindex="1"><img src="https://guy-Fawke.github.io/post-images/1581756315306.png" alt="" loading="lazy"></figure>
+<p><strong>2. 找到Gridea的文件夹（一般在文档下面），找到output文件夹打开</strong></p>
+<figure data-type="image" tabindex="2"><img src="https://guy-Fawke.github.io/post-images/1581756388949.jpg" alt="" loading="lazy"></figure>
+<p><strong>3. 空白处右键打开Git Bash</strong></p>
+<figure data-type="image" tabindex="3"><img src="https://guy-Fawke.github.io/post-images/1581756488752.png" alt="" loading="lazy"></figure>
+<p><strong>4. 输入以下命令回车</strong></p>
+<p><code>git remote add origin &quot;仓库的git命令地址&quot;</code><br>
+(只是一个命令就不贴图啦)之后再返回点击远程测试，如果不出意外的话就能成功连接了。</p>
+<h2 id="总结">总结</h2>
+<p>  我也是这两天刚刚开始使用Gridea并且搭建起了自己的博客，总体来说过程磕磕绊绊但是结果还是很好的。这个软件还比较小众，内在的设计大家可以自己再去没事点一点研究一下，如果有好的使用技巧也欢迎能够分享。我个人认为，有一点不足就是我不知道为什么目前没办法用其他的Markdown编译器来写自己的博客，后续如果成功了还会再来更新自己的使用方法，这里当然要推荐我比较喜欢的一款编辑器啦！！<a href="https://www.typora.io/">Typora</a>  边写边预览，小巧又轻便，哈哈，和我用来搭建博客的软件一样哦。</p>
+
+							</div>
+							<div class="wow bounceInDown vt-post-tags">
+								
+								<a href="https://guy-Fawke.github.io/tag/kVZMCYh2z/" rel="tag">Gridea</a>
+								
+								<a href="https://guy-Fawke.github.io/tag/py3GRqa-BA/" rel="tag">My</a>
+								
+							</div>
+							<nav class="navigation3 post-navigation3" role="navigation">
+
+								<div class="nav-links3">
+									
+									<div class="wow bounceInLeft nav-previous3"><a href="https://guy-Fawke.github.io/post/查看源码博弈/"
+											rel="prev"> 一场查看网页源代码的博弈</a></div>
+									
+									
+								</div>
+							</nav>
+							<div class="wow rollIn author-info" style="visibility: visible; animation-name: rollIn;">
+								<div class="author-avatar pull-left"><img
+										src="https://guy-Fawke.github.io/images/avatar.png"></div>
+								
+									
+						</div>
+					</article>
+					<div id="marlin_lite_about_widget-2" class="wow bounceInUp widget marlin_lite_about_widget"
+						data-wow-delay="0.1s">
+
+						
+						<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://guy-Fawke.github.io/media/scripts/Valine.min.js'></script>
+
+<div class="comment"></div>
+<script>
+        new Valine({
+            // AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+            av: AV, 
+            el: '.comment',
+            lang: 'zh-cn',
+            
+            
+      emoticon_list: ["吐.png","喷血.png","狂汗.png","不说话.png","汗.png","坐等.png","献花.png","不高兴.png","中刀.png","害羞.png","皱眉.png","小眼睛.png","中指.png","尴尬.png","瞅你.png","想一想.png","中枪.png","得意.png","肿包.png","扇耳光.png","亲亲.png","惊喜.png","脸红.png","无所谓.png","便便.png","愤怒.png","蜡烛.png","献黄瓜.png","内伤.png","投降.png","观察.png","看不见.png","击掌.png","抠鼻.png","邪恶.png","看热闹.png","口水.png","抽烟.png","锁眉.png","装大款.png","吐舌.png","无奈.png","长草.png","赞一个.png","呲牙.png","无语.png","阴暗.png","不出所料.png","咽气.png","期待.png","高兴.png","吐血倒地.png","哭泣.png","欢呼.png","黑线.png","喜极而泣.png","喷水.png","深思.png","鼓掌.png","暗地观察.png"],
+     	
+      	
+          
+        });
+    </script> 
+
+
+					</div>
+				</div>
+				
+
+
+<div class="tocc col l3 hide-on-med-and-down">
+	
+        <div class="toc-widget">
+			
+            <div class="toc-title"></div>
+			
+            <div id="toc-content">
+			
+			
+			</div>
+        </div>
+    </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.5.0/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '.entry-summary',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('.entry-summary').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+			</div>
+		</div>
+		<footer id="colophon" class="site-footer">
+	<div class="container">
+		<div class="copyright">
+			Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+			<br>
+			<b>Theme: </b>
+			<a href="https://github.com/alterfang/gridea-theme-pan" target="_blank" title="Pan">
+				<span><b>Pan</b></span>
+			</a>
+			<b>. Powered by </b>
+			<a href="https://gridea.dev/" target="_blank" title="Gridea">
+				<span><b>Gridea</b></span>
+			</a>
+		</div>
+	</div><!-- .container -->
+</footer><!-- #colophon -->
+	</div>
+
+	<script src="https://cdn.bootcss.com/fitvids/1.2.0/jquery.fitvids.min.js"></script>
+<script type='text/javascript' src='https://guy-Fawke.github.io/media/scripts/marlin-scripts.js'></script>
+ <script src="//tokinx.github.io/lately/lately.min.js"></script>
+  <script>jQuery(document).ready(function(){$.lately({'target':'.lately-a,.lately-b,.lately-c'})});</script>
+  <style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span><i class="iconfont icon-xiangshang"></i></span>
+</a>
+
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+	<script data-no-instant>
+		(function ($) {
+			$.extend({
+				adamsOverload: function () {
+					$('.navigation:eq(0)').remove();
+					$("").attr("rel", "external");
+					$("a[rel='external'],a[rel='external nofollow']").attr("target", "_blank");
+					$("a.vi").attr("rel", "");
+					$.viewImage({
+						'target': 'img',
+						'exclude': '.vsmile-icons img,.gallery img',
+						'delay': 300
+					});
+					$.lately({
+						'target': '.commentmetadata a,.infos time,.post-list time'
+					});
+					prettyPrint();
+
+					$('ul.links li a').each(function () {
+						if ($(this).parent().find('.bg').length == 0) {
+							$(this).parent().append(
+								'<!---<div class="bg" style="background-image:url(https://c3.glgoo.top/s2/favicons?domain=' +
+								$(this).attr("href") + ')"></div>--->')
+						}
+					});
+				}
+			});
+		})(jQuery);
+		jQuery.adamsOverload();
+	</script>
+
+</body>
+
+</html>
