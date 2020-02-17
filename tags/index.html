@@ -17,11 +17,19 @@ function getCSS()
         datetoday.setTime(timenow);
         thehour = datetoday.getHours();
 
+        if (thehour<06.00)
+
             display = "https://guy-Fawke.github.io/media/css/night.css";
 
+       else if (thehour>00.00)
+
             display = "https://guy-Fawke.github.io/media/css/night.css";   
-      
+
+        else if (thehour>06.00)
+           
             display = "https://guy-Fawke.github.io/media/css/day.css";
+
+        else if (thehour<00.00)
 
             display = "https://guy-Fawke.github.io/media/css/day.css";
       
@@ -42,6 +50,14 @@ var css = '<';
   <script src="https://cdn.bootcss.com/highlight.js/9.15.8/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
   <script>wow=new WOW({boxClass:'wow',animateClass:'animated',offset:0,mobile:true,live:true});wow.init();</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158608468-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-158608468-1');
+</script>
 
 <script type="text/javascript">
 window.onload=getCSS();
@@ -110,6 +126,8 @@ window.onload=getCSS();
 				
 				
 				
+				<a href="https://github.com/Guy-Fawke" target="_blank"><i class="iconfont icon-github"></i></a>
+				
 				
 				
 				
@@ -130,7 +148,7 @@ window.onload=getCSS();
 				
 				
 			</div>
-			<form id="gridea-search-form" data-update="1581917917563" action="/search/index.html">
+			<form id="gridea-search-form" data-update="1581918141650" action="/search/index.html">
 				<div class="search-box">
 					<input class="search-txt" name="q" placeholder="Type to search" />
 					<a class="search-btn">
