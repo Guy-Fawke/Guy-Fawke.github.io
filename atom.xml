@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://guy-Fawke.github.io</id>
     <title>Guy-fawke&apos;s  warehouse</title>
-    <updated>2020-02-17T05:42:32.478Z</updated>
+    <updated>2020-02-22T05:00:14.820Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://guy-Fawke.github.io"/>
     <link rel="self" href="https://guy-Fawke.github.io/atom.xml"/>
@@ -11,7 +11,7 @@
     <icon>https://guy-Fawke.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Guy-fawke&apos;s  warehouse</rights>
     <entry>
-        <title type="html"><![CDATA[一场查看网页源代码的博弈]]></title>
+        <title type="html"><![CDATA[CTF入门——一场查看网页源代码的博弈]]></title>
         <id>https://guy-Fawke.github.io/post/查看源码博弈/</id>
         <link href="https://guy-Fawke.github.io/post/查看源码博弈/">
         </link>
