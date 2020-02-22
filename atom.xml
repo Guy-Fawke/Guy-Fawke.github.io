@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://guy-Fawke.github.io</id>
     <title>Guy-fawke&apos;s  warehouse</title>
-    <updated>2020-02-22T05:00:52.613Z</updated>
+    <updated>2020-02-22T10:29:43.223Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://guy-Fawke.github.io"/>
     <link rel="self" href="https://guy-Fawke.github.io/atom.xml"/>
@@ -11,12 +11,42 @@
     <icon>https://guy-Fawke.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Guy-fawke&apos;s  warehouse</rights>
     <entry>
+        <title type="html"><![CDATA[文件上传漏洞之客户端检测绕过]]></title>
+        <id>https://guy-Fawke.github.io/post/upload_JS/</id>
+        <link href="https://guy-Fawke.github.io/post/upload_JS/">
+        </link>
+        <updated>2020-02-22T10:21:25.000Z</updated>
+        <content type="html"><![CDATA[<p>  这里不得不提一下，就目前大家电脑知识普遍提升的情况下，前端的检测显得越来越苍白无力了……不过作为文件上传漏洞的最基础问题，还是非常值得入门时了解学习的。<s>这里的客户端检测仅指针对文件上传这一问题而言的，不用想太多。</s></p>
+<p>  对于客户端的概念就不做过多解释了，如果你不想仔细了解，这里就把它当做你的浏览器就可以了，所以此时这个问题就转换成了你自己的浏览器，对你上传的文件进行检测。这不就变成了自己对自己的检查嘛！！!所以之前说这项检测说到底并没有什么*用。</p>
+<figure data-type="image" tabindex="1"><img src="https://guy-Fawke.github.io/post-images/1582366955213.jpg" alt="" loading="lazy"></figure>
+<p>  今天以<a href="https://github.com/c0ny1/upload-labs">Upload-Labs</a> (也就是一个文件上传漏洞学习的集合)的第一关为例进行学习，解题方法并不是唯一的，这里我们主要是用来学习最基础的这种概念和方式。首先根据提示我们可以很清楚的知道这是一个客户端使用Js对不合法的图片进行的检查。抱着学习的态度我们依次上传一个Webshell和一个图片，对其反馈结果做一个简单的对比。</p>
+<p><strong>传入一个php文件：</strong></p>
+<figure data-type="image" tabindex="2"><img src="https://guy-Fawke.github.io/post-images/1582366975972.jpg" alt="" loading="lazy"></figure>
+<p><strong>传入一个jpg文件：</strong></p>
+<figure data-type="image" tabindex="3"><img src="https://guy-Fawke.github.io/post-images/1582366988033.jpg" alt="" loading="lazy"></figure>
+<p>  此时两种文件的返回结果还是十分明显的，同时这也表现出了一个比较典型的前端检测的方式，那就是弹窗提醒。我们可以很轻松的知道，此时并不需要查看后端代码，也不需要抓包进行修改等，这时候以最应该做的是：看我之前的那篇文章，查看当前页面的源码🤙【手动狗头】。</p>
+<figure data-type="image" tabindex="4"><img src="https://guy-Fawke.github.io/post-images/1582367000235.jpg" alt="" loading="lazy"></figure>
+<p>  这里我们着重找到 onsubmit 事件。前端的JavaScript检测绕过主要有两个事件</p>
+<blockquote>
+<p>onchange  ： 事件会在域的内容改变时发生，也可用于单选框复选框改变后触发的事件。</p>
+<p>onsubmit   ：事件会在表单中确认按钮被点击时触发（也就是在表单提交时触发）onsubmit处理函数返回false不会引起表单的提交。</p>
+</blockquote>
+<p>  删掉之后再次点击上传，此时由于并没有触发后续的检测函数，所以文件直接上传成功了，也不会有弹窗进行提示和检测。</p>
+<figure data-type="image" tabindex="5"><img src="https://guy-Fawke.github.io/post-images/1582367011076.jpg" alt="" loading="lazy"></figure>
+<p><strong>我们跟进onsubmit触发的checkFile()函数：</strong><br>
+<img src="https://guy-Fawke.github.io/post-images/1582367030471.png" alt="" loading="lazy"></p>
+<p>  可以看到这里是采用的白名单的检测方式，仅仅定义了三个允许上传的文件类型，在有些时候我们同样能找到前端JavaScript代码中对允许上传的文件类型定义的函数，在这里将想要上传的文件函数后缀加入白名单中，也可以实现绕过检测，这道题由于这里是对配置文件进行引用，在白名单部分并不是真正的前端，所以无法修改，如果大家遇到了可以进行尝试。</p>
+<h2 id="总结">总结：</h2>
+<p>  文件上传在前端检测方面是比较简单的，因为是自己对自己进行检测，对于前端来说，还有一种非常典型的为，按键或者文本框是灰色的，无法使用，这里没有专门找例子进行讲解，如果在遇到的时候只需要找到对应的前端触发函数进行删除就可以了，同样也非常简单。而这里作为文件上传的第一个学习科目还是容易让人有成就感的，哈哈。</p>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[CTF入门—一场查看网页源代码的博弈]]></title>
         <id>https://guy-Fawke.github.io/post/查看源码博弈/</id>
         <link href="https://guy-Fawke.github.io/post/查看源码博弈/">
         </link>
         <updated>2020-02-16T15:22:46.000Z</updated>
-        <content type="html"><![CDATA[<p>   为什么会有一个这么奇怪的标题呢，这事要从我开始学习Web安全说起。在初学CTF之时询问了大佬们学哪个方面有前途，大佬们的回答千奇百怪，在考虑了我还是更喜欢对着界面看到成效的这种感觉，最终还是决定向Web方向发展一下，所以这就开始了我的渗透测试学习。学习是基于这个网站的---&gt;<a href="https://adworld.xctf.org.cn">攻防世界</a>，这里也推荐给大家，可以和自己的小伙伴组建战队，一起学习进步🤜🤛。</p>
+        <content type="html"><![CDATA[<p>  为什么会有一个这么奇怪的标题呢，这事要从我开始学习Web安全说起。在初学CTF之时询问了大佬们学哪个方面有前途，大佬们的回答千奇百怪，在考虑了我还是更喜欢对着界面看到成效的这种感觉，最终还是决定向Web方向发展一下，所以这就开始了我的渗透测试学习。学习是基于这个网站的---&gt;<a href="https://adworld.xctf.org.cn">攻防世界</a>，这里也推荐给大家，可以和自己的小伙伴组建战队，一起学习进步🤜🤛。</p>
 <p>  今天要说的这场博弈呢，就是这个练习靶场的Web基础题第一题:<br>
 <img src="https://guy-Fawke.github.io/post-images/2020021601.jpg" alt="" loading="lazy"></p>
 <p>  这是一道非常基础的题，想要学习Web，首先就要学会的是查看网页的源代码，几种查看网页源代码的方式都十分简单，这里就不过多解释了，简单列出来：</p>
